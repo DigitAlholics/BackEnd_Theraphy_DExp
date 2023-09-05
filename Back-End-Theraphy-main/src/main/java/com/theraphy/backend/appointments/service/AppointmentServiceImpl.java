@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Set;
 
@@ -92,5 +94,20 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Override
     public Appointment getByTopicAndPhysiotherapistId(String topic, Long physiotherapistId) {
         return appointmentRepository.findByTopicAndPhysiotherapistId(topic, physiotherapistId).orElseThrow(()-> new ResourceNotFoundException("No Appointment with this name found for Physiotherapist"));
+    }
+
+    @Override
+    public void cancelAppointment(Long appointmentId) {
+        Appointment appointment = getById(appointmentId);
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime appointmentDate = LocalDateTime.parse(appointment.getScheduledDate());
+
+        long hoursUntilAppointment = ChronoUnit.HOURS.between(now, appointmentDate);
+
+        if(hoursUntilAppointment < 24){
+            throw new ResourceValidationException(ENTITY, "You can only cancel an appointment 24 hours before it starts.");
+        }else {
+            delete(appointmentId);
+        }
     }
 }
