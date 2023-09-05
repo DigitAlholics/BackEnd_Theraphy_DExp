@@ -124,6 +124,8 @@ public class Patient extends AuditModel{
     }
 
 
+
+
     @NotNull
     @Column(name = "appointment_quantity")
     private Long appointmentQuantity;

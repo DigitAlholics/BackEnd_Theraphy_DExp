@@ -18,5 +18,7 @@ public interface AppointmentService {
     Appointment getByTopicAndPatientId(String topic, Long patientId);
     Appointment getByTopicAndPhysiotherapistId(String topic, Long physiotherapistId);
 
+    public List<Appointment> getAppointmentsByPhysiotherapistAndDate(Long physiotherapistId, String date);
+
     void cancelAppointment(Long appointmentId);
 }

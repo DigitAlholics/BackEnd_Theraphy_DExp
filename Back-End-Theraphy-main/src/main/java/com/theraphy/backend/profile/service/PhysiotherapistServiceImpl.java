@@ -1,5 +1,6 @@
 package com.theraphy.backend.profile.service;
 
+import com.theraphy.backend.appointments.domain.model.entity.Appointment;
 import com.theraphy.backend.profile.domain.model.entity.Physiotherapist;
 import com.theraphy.backend.profile.domain.persistence.PhysiotherapistRepository;
 import com.theraphy.backend.profile.domain.service.PhysiotherapistService;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -103,9 +105,42 @@ public class PhysiotherapistServiceImpl implements PhysiotherapistService {
 
     @Override
     public Physiotherapist addAppointmentToPhysiotherapist(Long physiotherapistId, String scheduledDate, String topic, String diagnosis, String done) {
-        return physiotherapistRepository.findById(physiotherapistId).map(physiotherapist -> {
+        /*return physiotherapistRepository.findById(physiotherapistId).map(physiotherapist -> {
             return physiotherapistRepository.save(physiotherapist.addAppointment(scheduledDate,topic,diagnosis, done));
-        }).orElseThrow(() -> new ResourceNotFoundException(ENTITY,physiotherapistId));
+        }).orElseThrow(() -> new ResourceNotFoundException(ENTITY,physiotherapistId));*/
+
+        Optional<Physiotherapist> optionalPhysiotherapist = physiotherapistRepository.findById(physiotherapistId);
+        if (optionalPhysiotherapist.isEmpty()) {
+            throw new ResourceNotFoundException(ENTITY, physiotherapistId);
+        }
+        Physiotherapist physiotherapist = optionalPhysiotherapist.get();
+
+        // Verificar el límite de citas diarias
+        Long currentDailyAppointments = physiotherapist.getConsultationsQuantity();
+        Long dailyAppointmentLimit = 6L;
+
+        if (currentDailyAppointments >= dailyAppointmentLimit) {
+            throw new ResourceValidationException(ENTITY, "Daily appointment limit exceeded.");
+        }
+        // Crear la cita
+        Appointment appointment = new Appointment();
+        appointment.setScheduledDate(scheduledDate);
+        appointment.setTopic(topic);
+        appointment.setDiagnosis(diagnosis);
+        appointment.setDone(done);
+        appointment.setPhysiotherapist(physiotherapist);
+
+        // Agregar la cita al conjunto de citas del fisioterapeuta
+        physiotherapist.getAppointments().add(appointment);
+
+        // Incrementar el contador de citas diarias
+        physiotherapist.setConsultationsQuantity(currentDailyAppointments + 1);
+
+        // Guardar los cambios
+        physiotherapistRepository.save(physiotherapist);
+
+        // Devolver la cita recién creada
+        return appointment.getPhysiotherapist();
     }
 
     @Override

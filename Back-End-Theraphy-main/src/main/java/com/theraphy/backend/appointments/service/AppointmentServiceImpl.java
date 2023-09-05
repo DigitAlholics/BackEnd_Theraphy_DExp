@@ -110,4 +110,12 @@ public class AppointmentServiceImpl implements AppointmentService {
             delete(appointmentId);
         }
     }
+
+    @Override
+    public List<Appointment> getAppointmentsByPhysiotherapistAndDate(Long physiotherapistId, String date) {
+        return appointmentRepository.findByPhysiotherapistIdAndScheduledDate(physiotherapistId, date);
+    }
+
+
+
 }
