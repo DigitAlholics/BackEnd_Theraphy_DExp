@@ -26,10 +26,8 @@ public class CancelAppointmentTest {
 
     @BeforeEach
     public void setUp() {
-        MockitoAnnotations.openMocks(this); // Inicializa las anotaciones Mockito
-
-        // Crea la instancia del servicio a probar
-        appointmentService = new AppointmentServiceImpl(appointmentRepository, null /* Puedes pasar null para el Validator en las pruebas */);
+        MockitoAnnotations.openMocks(this);
+        appointmentService = new AppointmentServiceImpl(appointmentRepository, null );
     }
     @Test
     public void testCancelAppointmentBefore24Hours() {
