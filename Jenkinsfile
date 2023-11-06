@@ -22,13 +22,17 @@ pipeline {
 
         stage('Unit Tests') {
             steps {
-                sh 'mvn test'  // Ejecuta pruebas unitarias
+                withMaven(maven : 'MAVEN_3_9_5') {
+                    sh 'mvn test'  // Ejecuta pruebas unitarias
+                }
             }
         }
 
         stage('Integration Tests') {
             steps {
-                sh 'mvn verify'  // Ejecuta pruebas de integración
+                withMaven(maven : 'MAVEN_3_9_5') {
+                    sh 'mvn verify'  // Ejecuta pruebas de integración
+                }
             }
         }
 
