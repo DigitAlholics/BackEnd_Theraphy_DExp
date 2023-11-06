@@ -23,7 +23,7 @@ pipeline {
         stage('Unit Tests') {
             steps {
                 withMaven(maven : 'MAVEN_3_9_5') {
-                    sh 'mvn test'  // Ejecuta pruebas unitarias
+                    bat 'mvn test'  // Ejecuta pruebas unitarias
                 }
             }
         }
@@ -31,7 +31,7 @@ pipeline {
         stage('Integration Tests') {
             steps {
                 withMaven(maven : 'MAVEN_3_9_5') {
-                    sh 'mvn verify'  // Ejecuta pruebas de integración
+                    bat 'mvn verify'  // Ejecuta pruebas de integración
                 }
             }
         }
