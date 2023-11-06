@@ -6,47 +6,65 @@ pipeline {
     }
 	
     stages {
-        stage ('Compile Stage 2023-02') {
-
+        stage ('Checkout') {
             steps {
-                withMaven(maven : 'MAVEN_3_9_5') {
-                    bat 'mvn clean compile'
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'mvn clean package'  // Compila y empaqueta el proyecto
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                sh 'mvn test'  // Ejecuta pruebas unitarias
+            }
+        }
+
+        stage('Integration Tests') {
+            steps {
+                sh 'mvn verify'  // Ejecuta pruebas de integración
+            }
+        }
+
+        stage('Deploy to Dev') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+                }
+            steps {
+            // Despliegue en un entorno de desarrollo
+                script {
+                    azureWebAppPublish appName: 'DigitAlholics', resourceGroup: 'DigitAlholics', filePath: '**/target/*.jar'
                 }
             }
         }
 
-        stage ('Testing Stage 2023-02') {
+        stage('Deploy to Staging') {
+            when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+            }
             steps {
-                withMaven(maven : 'MAVEN_3_9_5') {
-                    bat 'mvn test'
+                // Despliegue en un entorno de staging
+                script {
+                    azureWebAppPublish appName: 'DigitAlholics', resourceGroup: 'DigitAlholics', filePath: '**/target/*.jar'
                 }
             }
         }
 
-	 /*stage ('sonarQube Analysis') {
-		steps {
-			withSonarQubeEnv('sonarLocal') {
-				sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=one'
-			}
-		}
-	}*/
-
-        stage ('package Stage 2023-2') {
-            steps {
-                withMaven(maven : 'MAVEN_3_9_5') {
-                    bat 'mvn package'
+        stage('Deploy to Production') {
+             when {
+                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
+             }
+             steps {
+                // Despliegue en producción
+                script {
+                    azureWebAppPublish appName: 'DigitAlholics', resourceGroup: 'DigitAlholics', filePath: '**/target/*.jar'
                 }
-            }
+             }
         }
-		/* // Descomentar cuando se tenga instalado en Tomcat
-		stage('Deploy tomcat') {
-            steps {
-                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL} direcion ${env.WORKSPACE}"	
-                withMaven(maven : 'MAVEN_3_9_5') {
-					bat '"C:\\Program Files\\Git\\mingw64\\bin\\curl.exe" -T ".\\target\\sistema-ventas-spring.war" "http://tomcat:tomcat@localhost:9090/manager/text/deploy?path=/sistema-ventas-spring&update=true"'
-                } 
-            }
-        }*/
 
     }
 }
