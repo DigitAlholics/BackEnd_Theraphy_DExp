@@ -49,10 +49,10 @@ pipeline {
                     def ftpsPort = '21' // Puerto FTPS (generalmente 21)
 
                     // Ruta local del archivo JAR a desplegar
-                    def localJarFilePath = '**/target/Backend-Theraphy-1.0.jar'
+                    def localJarFilePath = './target/Backend-Theraphy-1.0.jar'
 
                     // Comando FTP para cargar el archivo JAR
-                    bat "curl --ftp-ssl -u $ftpsUsername:$ftpsPassword -T $localJarFilePath ftps://$ftpsHost/site/wwwroot/nombre-del-archivo.jar"
+                    bat "curl --ftp-ssl -u $ftpsUsername:$ftpsPassword -T $localJarFilePath ftps://$ftpsHost/site/wwwroot/Backend-Theraphy-1.0.jar"
                 }
             }
         }
