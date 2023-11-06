@@ -14,7 +14,9 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'  // Compila y empaqueta el proyecto
+                withMaven(maven : 'MAVEN_3_9_5') {
+                    bat 'mvn clean package' // Compila y empaqueta el proyecto
+                }
             }
         }
 
