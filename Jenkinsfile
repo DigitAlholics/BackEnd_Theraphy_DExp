@@ -36,40 +36,15 @@ pipeline {
             }
         }
 
-        stage('Deploy to Dev') {
-            when {
-                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-                }
-            steps {
-            // Despliegue en un entorno de desarrollo
-                script {
-                    azureWebAppPublish appName: 'DigitAlholics1', resourceGroup: 'DigitAlholics1', filePath: '**/target/*.jar'
-                }
-            }
-        }
-
-        stage('Deploy to Staging') {
+        stage('Deploy to Azure Web App') {
             when {
                 expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
             }
             steps {
-                // Despliegue en un entorno de staging
                 script {
-                    azureWebAppPublish appName: 'DigitAlholics1', resourceGroup: 'DigitAlholics1', filePath: '**/target/*.jar'
+                    azureWebAppPublish appName: 'DigitAlholics1', slotName: 'Production', publishProfile: 'TUCONTEXTO', filePath: '**/target/*.jar'
                 }
             }
-        }
-
-        stage('Deploy to Production') {
-             when {
-                expression { currentBuild.resultIsBetterOrEqualTo('SUCCESS') }
-             }
-             steps {
-                // Despliegue en producción
-                script {
-                    azureWebAppPublish appName: 'DigitAlholics1', resourceGroup: 'DigitAlholics1', filePath: '**/target/*.jar'
-                }
-             }
         }
 
     }
