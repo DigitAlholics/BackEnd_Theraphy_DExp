@@ -3,7 +3,7 @@ pipeline {
     environment {
         DOCKER_REGISTRY = 'docker.io'  // Reemplaza con tu registro de Docker
         KUBE_NAMESPACE = 'DigitAlholics2'  // Reemplaza con el espacio de nombres de Kubernetes
-        KUBE_DEPLOYMENT = 'DigitAlholics2-deployment'  // Reemplaza con el nombre del despliegue en Kubernetes
+        KUBE_DEPLOYMENT = 'digitalholics2-deployment'  // Reemplaza con el nombre del despliegue en Kubernetes
         KUBE_SERVER = 'https://digitalholics2-dns-0l9ll47v.hcp.eastus.azmk8s.io:443'  // Reemplaza con las credenciales de Kubernetes
     }
     tools { 
