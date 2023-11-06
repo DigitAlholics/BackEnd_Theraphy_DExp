@@ -52,7 +52,7 @@ pipeline {
                     def localJarFilePath = '**/target/*.jar'
 
                     // Comando FTP para cargar el archivo JAR
-                    sh "curl --ftp-ssl -u $ftpsUsername:$ftpsPassword -T $localJarFilePath ftps://$ftpsHost/site/wwwroot/nombre-del-archivo.jar"
+                    bat "curl --ftp-ssl -u $ftpsUsername:$ftpsPassword -T $localJarFilePath ftps://$ftpsHost/site/wwwroot/nombre-del-archivo.jar"
                 }
             }
         }
