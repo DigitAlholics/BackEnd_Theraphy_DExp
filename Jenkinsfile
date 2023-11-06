@@ -43,7 +43,7 @@ pipeline {
             steps {
             // Despliegue en un entorno de desarrollo
                 script {
-                    azureWebAppPublish appName: 'DigitAlholics', resourceGroup: 'DigitAlholics', filePath: '**/target/*.jar'
+                    azureWebAppPublish appName: 'DigitAlholics1', resourceGroup: 'DigitAlholics1', filePath: '**/target/*.jar'
                 }
             }
         }
@@ -55,7 +55,7 @@ pipeline {
             steps {
                 // Despliegue en un entorno de staging
                 script {
-                    azureWebAppPublish appName: 'DigitAlholics', resourceGroup: 'DigitAlholics', filePath: '**/target/*.jar'
+                    azureWebAppPublish appName: 'DigitAlholics1', resourceGroup: 'DigitAlholics1', filePath: '**/target/*.jar'
                 }
             }
         }
@@ -67,7 +67,7 @@ pipeline {
              steps {
                 // Despliegue en producción
                 script {
-                    azureWebAppPublish appName: 'DigitAlholics', resourceGroup: 'DigitAlholics', filePath: '**/target/*.jar'
+                    azureWebAppPublish appName: 'DigitAlholics1', resourceGroup: 'DigitAlholics1', filePath: '**/target/*.jar'
                 }
              }
         }
