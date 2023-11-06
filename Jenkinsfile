@@ -51,7 +51,7 @@ pipeline {
                     // Ruta local del archivo JAR a desplegar
                     def localJarFilePath = './target/Backend-Theraphy-1.0.jar'
 
-                    // Comando FTP para cargar el archivo JAR
+                    // Comando FTP para cargar el archivo JAR ghf
                     bat "curl --ftp-ssl -u "brancovillegasperalta:@Admin123" --ssl-reqd -T ./target/Backend-Theraphy-1.0.jar ftps://waws-prod-blu-517.ftp.azurewebsites.windows.net/site/wwwroot/Backend-Theraphy-1.0.jar"
                 }
             }
