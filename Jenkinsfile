@@ -42,7 +42,17 @@ pipeline {
             }
             steps {
                 script {
-                    azureWebAppPublish appName: 'DigitAlholics1', slotName: 'Production', publishProfile: 'TUCONTEXTO', filePath: '**/target/*.jar'
+                    // Configuración de las credenciales FTPS
+                    def ftpsUsername = 'DigitAlholics1\$DigitAlholics1'
+                    def ftpsPassword = 'kAg1BZriaDm9ZNz3Zw4KMxTDDptC4YYZEhcTaiLD5TtnlyTzawc5meYSCRel'
+                    def ftpsHost = 'waws-prod-blu-517.ftp.azurewebsites.windows.net'
+                    def ftpsPort = '21' // Puerto FTPS (generalmente 21)
+
+                    // Ruta local del archivo JAR a desplegar
+                    def localJarFilePath = '**/target/*.jar'
+
+                    // Comando FTP para cargar el archivo JAR
+                    sh "curl --ftp-ssl -u $ftpsUsername:$ftpsPassword -T $localJarFilePath ftps://$ftpsHost/site/wwwroot/nombre-del-archivo.jar"
                 }
             }
         }
