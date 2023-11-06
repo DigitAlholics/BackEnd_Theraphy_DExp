@@ -43,8 +43,8 @@ pipeline {
             steps {
                 script {
                     // Configuración de las credenciales FTPS
-                    def ftpsUsername = 'DigitAlholics1\$DigitAlholics1'
-                    def ftpsPassword = 'kAg1BZriaDm9ZNz3Zw4KMxTDDptC4YYZEhcTaiLD5TtnlyTzawc5meYSCRel'
+                    def ftpsUsername = 'DigitAlholics1\brancovillegasperalta'
+                    def ftpsPassword = '@Admin123'
                     def ftpsHost = 'waws-prod-blu-517.ftp.azurewebsites.windows.net'
                     def ftpsPort = '21' // Puerto FTPS (generalmente 21)
 
