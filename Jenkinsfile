@@ -53,6 +53,7 @@ pipeline {
 
                     // Comando FTP para cargar el archivo JAR
                     bat """curl --ftp-ssl -u "${ftpsUsername}:${ftpsPassword}" --ssl-reqd -T "${localJarFilePath}" "ftps://${ftpsHost}/site/wwwroot/Backend-Theraphy-1.0.jar" """
+                }
             }
         }
 
