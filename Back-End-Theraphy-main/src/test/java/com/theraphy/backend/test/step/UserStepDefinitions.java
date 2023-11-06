@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@CucumberContextConfiguration
+//@CucumberContextConfiguration
 public class UserStepDefinitions {
     private TestRestTemplate testRestTemplate;
 
@@ -29,17 +29,18 @@ public class UserStepDefinitions {
 
     private ResponseEntity<String> responseEntity;
 
-    @Given("The Endpoint {string} is available")
+    @Given("The Endpoint {string} is available for user")
     public void theEndpointIsAvailable(String endpointPath) {
         this.endpointPath = String.format(endpointPath, randomServerPort);
         testRestTemplate = new TestRestTemplate();
     }
 
-    @When("A Post Request is sent with values {string}, {string}")
-    public void aPostRequestIsSentWithValues(String email, String password) {
+    @When("A Post Request is sent with values {string}, {string}, {string}")
+    public void aPostRequestIsSentWithValues(String email, String password, String type) {
         CreateUserResource resource = new CreateUserResource()
                 .withEmail(email)
-                .withPassword(password);
+                .withPassword(password)
+                .withType(type);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CreateUserResource> request = new HttpEntity<>(resource, headers);
@@ -52,11 +53,12 @@ public class UserStepDefinitions {
         assertThat(expectedStatusCode).isEqualTo(actualStatusCode);
     }
 
-    @And("An User Resource is included in Response Body, with values {string}, {string}")
-    public void anUserResourceIsIncludedInResponseBodyWithValues(String email, String password) {
+    @And("An User Resource is included in Response Body, with values {string}, {string}, {string}")
+    public void anUserResourceIsIncludedInResponseBodyWithValues(String email, String password, String type) {
         UserResource expectedResource = new UserResource()
                 .withEmail(email)
-                .withPassword(password);
+                .withPassword(password)
+                .withType(type);
         String value = responseEntity.getBody();
         ObjectMapper mapper = new ObjectMapper();
         UserResource actualResource;
@@ -70,11 +72,12 @@ public class UserStepDefinitions {
         assertThat(expectedResource).usingRecursiveComparison().isEqualTo(actualResource);
     }
 
-    @Given("An User Resource with values {string}, {string} is already stored")
-    public void anUserResourceWithValuesIsAlreadyStored(String email, String password) {
+    @Given("An User Resource with values {string}, {string}, {string} is already stored")
+    public void anUserResourceWithValuesIsAlreadyStored(String email, String password, String type) {
         CreateUserResource resource = new CreateUserResource()
                 .withEmail(email)
-                .withPassword(password);
+                .withPassword(password)
+                .withType(type);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CreateUserResource> request = new HttpEntity<>(resource, headers);

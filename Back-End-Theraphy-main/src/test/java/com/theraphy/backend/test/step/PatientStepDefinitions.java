@@ -6,6 +6,7 @@ import io.cucumber.core.internal.com.fasterxml.jackson.core.JsonProcessingExcept
 import io.cucumber.core.internal.com.fasterxml.jackson.databind.ObjectMapper;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
+import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.cucumber.spring.CucumberContextConfiguration;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -17,7 +18,7 @@ import org.springframework.http.ResponseEntity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@CucumberContextConfiguration
+//@CucumberContextConfiguration
 public class PatientStepDefinitions {
 
     private TestRestTemplate testRestTemplate;
@@ -29,20 +30,30 @@ public class PatientStepDefinitions {
 
     private ResponseEntity<String> responseEntity;
 
-    @Given("The Endpoint {string} is available")
+    @Given("The Endpoint {string} is available for patients")
     public void theEndpointIsAvailable(String endpointPath) {
         this.endpointPath = String.format(endpointPath, randomServerPort);
         testRestTemplate = new TestRestTemplate();
     }
 
-    @When("A Post Request is sent with values {int},{string}, {string}, {int}, {string}, {string}")
-    public void aPostRequestIsSentWithValues(int userId, String firstName, String lastName, int age, String photoUrl, String birthdate) {
+    @Then("A Response is received with Status {int} for patient")
+    public void aResponseIsReceivedWithStatus(int expectedStatusCode) {
+        int actualStatusCode = responseEntity.getStatusCodeValue();
+        assertThat(expectedStatusCode).isEqualTo(actualStatusCode);
+    }
+    @When("A Post Request is sent with values {int},{string}, {string}, {int}, {string}, {string}, {string}, {int}")
+    public void aPostRequestIsSentWithValues(int userId, String firstName, String lastName, int age, String photoUrl, String birthdate, String email, int appointment) {
+        Long usId = (long) userId;
+        Long consult = (long) appointment;
         CreatePatientResource resource = new CreatePatientResource()
+                .withUserId(usId)
                 .withFirstName(firstName)
                 .withLastName(lastName)
                 .withAge(age)
                 .withPhotoUrl(photoUrl)
-                .withBirthdayDate(birthdate);
+                .withBirthdayDate(birthdate)
+                .withEmail(email)
+                .withAppointmentQuantity(consult);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<CreatePatientResource> request = new HttpEntity<>(resource, headers);
@@ -50,14 +61,19 @@ public class PatientStepDefinitions {
 
     }
 
-    @And("An Patient Resource is included in Response Body, with values {int}, {string}, {string}, {int}, {string}, {string}")
-    public void anPatientResourceIsIncludedInResponseBodyWithValues(int userId, String firstName, String lastName, int age, String photoUrl, String birthdate) {
+    @And("An Patient Resource is included in Response Body, with values {int},{string}, {string}, {int}, {string}, {string}, {string}, {int}")
+    public void anPatientResourceIsIncludedInResponseBodyWithValues(int userId, String firstName, String lastName, int age, String photoUrl, String birthdate, String email, int appointment) {
+        Long usId = (long) userId;
+        Long consult = (long) appointment;
         PatientResource expectedResource = new PatientResource()
+                .withUserId(usId)
                 .withFirstName(firstName)
                 .withLastName(lastName)
                 .withAge(age)
                 .withPhotoUrl(photoUrl)
-                .withBirthdayDate(birthdate);
+                .withBirthdayDate(birthdate)
+                .withEmail(email)
+                .withAppointmentQuantity(consult);
         String value = responseEntity.getBody();
         ObjectMapper mapper = new ObjectMapper();
         PatientResource actualResource;
@@ -84,6 +100,7 @@ public class PatientStepDefinitions {
         HttpEntity<CreatePatientResource> request = new HttpEntity<>(resource, headers);
         responseEntity = testRestTemplate.postForEntity(endpointPath, request, String.class);
     }
+
 
 
 }
