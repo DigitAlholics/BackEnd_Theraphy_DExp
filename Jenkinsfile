@@ -70,22 +70,15 @@ pipeline {
                 }
             }
         }
-        stage('Check Docker Hub Connectivity') {
-            steps {
-                withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
-                    bat "echo \${DOCKER_HUB_PASSWORD} | docker login -u \${DOCKER_HUB_USERNAME} --password-stdin"
-                }
-            }
-        }
+
         stage('Publish Docker Image') {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
-                        // Autenticación en Docker Hub
-                        docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_HUB_USERNAME', 'DOCKER_HUB_PASSWORD') {
-                            // Publicar la imagen en Docker Hub
-                            docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
-                        }
+                    withCredentials([string(credentialsId: 'DockerAccessToken', variable: 'dckr_pat_7auyz7KNbEbFjHLAkUOzuJ0zk6A')]) {
+                        // Autenticación en Docker Hub con el token de acceso personal
+                        sh "docker login -u mundex -p $DOCKER_HUB_TOKEN"
+                        // Publica la imagen en Docker Hub
+                        docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                     }
                 }
             }
