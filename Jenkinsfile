@@ -101,7 +101,7 @@ pipeline {
                     def yamlContent = readFile(yamlFilePath)
 
                     // Reemplazar IMAGE_TAG en el contenido YAML
-                    yamlContent = yamlContent.replaceAll('\${IMAGE_TAG}', imageTag)
+                    yamlContent = yamlContent.replaceAll('${IMAGE_TAG}', imageTag)
 
                     // Escribir el contenido actualizado de vuelta al archivo
                     writeFile(file: yamlFilePath, text: yamlContent)
