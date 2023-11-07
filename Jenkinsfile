@@ -76,7 +76,7 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'DockerAccessToken', variable: 'dckr_pat_7auyz7KNbEbFjHLAkUOzuJ0zk6A')]) {
                         // Autenticación en Docker Hub con el token de acceso personal
-                        sh "docker login -u mundex -p $DOCKER_HUB_TOKEN"
+                        bat "docker login -u mundex -p $DOCKER_HUB_TOKEN"
                         // Publica la imagen en Docker Hub
                         docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                     }
