@@ -16,5 +16,5 @@ Feature: Physiotherapist Adding
   Scenario: Add Physiotherapist with existing UserId
     Given An Physiotherapist Resource with values 1, "Jhon", "Doe", "New York Street", 15, "photo.com", "02/01/1997", is already stored
     When A Post Request is sent with values 7, "Jhon", "Doe", "Duo","New York Street", 15, "photo.com", "02-01-1997", 2.7, "Head", "jhon@email.com", 12
-    Then A Response is received with Status 400
+    Then A Response is received with Status 400 in physio
     And A Message is included in Response Body, with values "Not all constraints satisfied for Physiotherapist: A Physiotherapist with the same UserId  already exists."

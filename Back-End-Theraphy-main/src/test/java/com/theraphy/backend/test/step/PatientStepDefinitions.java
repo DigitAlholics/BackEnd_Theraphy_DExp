@@ -102,5 +102,15 @@ public class PatientStepDefinitions {
     }
 
 
+    @Then("A Response is received with Status {int} in patient")
+    public void aResponseIsReceivedWithStatusInPatient(int expectedStatusCode) {
+        int actualStatusCode = responseEntity.getStatusCodeValue();
+        assertThat(expectedStatusCode).isEqualTo(actualStatusCode);
+    }
 
+    @And("A Message is included in Response Body, with values for patient {string}")
+    public void aMessageIsIncludedInResponseBodyWithValues(String expectedMessage) {
+        String responseBody = responseEntity.getBody();
+        assertThat(responseBody).contains(expectedMessage);
+    }
 }
