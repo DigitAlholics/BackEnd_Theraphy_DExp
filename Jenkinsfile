@@ -65,7 +65,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    / Construir la imagen de Docker
+                    // Construir la imagen de Docker
                     docker.build("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}")
                 }
             }
