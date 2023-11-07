@@ -76,7 +76,7 @@ pipeline {
                 script {
 
                     // Autenticación en Docker Hub con tu nombre de usuario y contraseña
-                    bat "docker login docker.io -u mundex -p @Db2c3R4C"
+                    bat "docker login docker.io -u mundex -p admin1234"
 
 
                     // Publica la imagen en Docker Hub
