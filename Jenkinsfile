@@ -109,7 +109,7 @@ pipeline {
                     bat 'az account set --subscription 18c0accd-670d-4555-9f17-23e1d4ab0603'
 
                     // Descargar credenciales del clúster de Kubernetes
-                    bat 'az aks get-credentials --resource-group DigitAlholics3 --name DigitAlholics3 --node-vmss aks-digitalholic-44270021-vmss000000'
+                    bat 'az aks get-credentials --resource-group DigitAlholics3 --name DigitAlholics3'
 
                     // Aplicar configuraciones en Kubernetes (reemplaza esto por tus comandos)
                     bat "kubectl apply -f AKS_webapp.yaml --namespace=default --set IMAGE_TAG=${IMAGE_TAG}"
