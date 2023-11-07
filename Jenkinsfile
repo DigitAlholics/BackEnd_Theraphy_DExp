@@ -65,9 +65,8 @@ pipeline {
 
         stage('Build Docker Image') {
             steps {
-                script {
-                    // Construir la imagen de Docker
-                    docker.build("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}")
+                withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                    bat "echo \${DOCKER_HUB_PASSWORD} | docker login -u \${DOCKER_HUB_USERNAME} --password-stdin"
                 }
             }
         }
