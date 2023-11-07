@@ -2,8 +2,8 @@ pipeline {
     agent any
     environment {
         DOCKER_REGISTRY = 'docker.io'  // Reemplaza con tu registro de Docker
-        KUBE_NAMESPACE = 'DigitAlholics2'  // Reemplaza con el espacio de nombres de Kubernetes
-        KUBE_DEPLOYMENT = 'digitalholics2-deployment'  // Reemplaza con el nombre del despliegue en Kubernetes
+        KUBE_NAMESPACE = 'DigitAlholics3'  // Reemplaza con el espacio de nombres de Kubernetes
+        KUBE_DEPLOYMENT = 'digitalholics3-deployment'  // Reemplaza con el nombre del despliegue en Kubernetes
         KUBE_SERVER = 'https://digitalholics2-dns-0l9ll47v.hcp.eastus.azmk8s.io:443'  // Reemplaza con las credenciales de Kubernetes
     }
     tools { 
@@ -91,14 +91,28 @@ pipeline {
                 }
             }
         }
+        stage('Set Image Tag') {
+            steps {
+                script {
+                    // Definir IMAGE_TAG con el número de versión deseado (por ejemplo, BUILD_NUMBER)
+                    IMAGE_TAG = env.BUILD_NUMBER
+                }
+            }
+        }
         stage('Deploy to Kubernetes') {
             steps {
                 script {
-                    // Autenticarse en el clúster de Kubernetes
-                    withKubeConfig([credentialsId: 'your-kube-credentials', serverUrl: KUBE_SERVER]) {
-                        // Aplicar la configuración en Kubernetes
-                        bat "kubectl apply -f your-kube-config.yaml --namespace=${KUBE_NAMESPACE}"
-                    }
+                    // Iniciar sesión en Azure (asegúrate de que la CLI de Azure esté instalada en tu servidor Jenkins)
+                    bat 'az login'
+
+                    // Establecer la suscripción
+                    bat 'az account set --subscription 18c0accd-670d-4555-9f17-23e1d4ab0603'
+
+                    // Descargar credenciales del clúster de Kubernetes
+                    bat 'az aks get-credentials --resource-group DigitAlholics3 --name DigitAlholics3'
+
+                    // Aplicar configuraciones en Kubernetes (reemplaza esto por tus comandos)
+                    sh "kubectl apply -f AKS_webapp.yaml --namespace=DigitAlholics3 --set IMAGE_TAG=${IMAGE_TAG}"
                 }
             }
         }
