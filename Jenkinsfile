@@ -91,14 +91,24 @@ pipeline {
                 }
             }
         }
-        stage('Set Image Tag') {
+        stage('Replace IMAGE_TAG in YAML') {
             steps {
                 script {
-                    // Definir IMAGE_TAG con el número de versión deseado (por ejemplo, BUILD_NUMBER)
-                    IMAGE_TAG = env.BUILD_NUMBER
+                    def yamlFilePath = 'AKS_webapp.yaml' // Ruta al archivo YAML
+                    def imageTag = env.BUILD_NUMBER // O el valor deseado para IMAGE_TAG
+
+                    // Leer el contenido del archivo YAML
+                    def yamlContent = readFile(yamlFilePath)
+
+                    // Reemplazar IMAGE_TAG en el contenido YAML
+                    yamlContent = yamlContent.replaceAll('\${IMAGE_TAG}', imageTag)
+
+                    // Escribir el contenido actualizado de vuelta al archivo
+                    writeFile(file: yamlFilePath, text: yamlContent)
                 }
             }
         }
+
         stage('Deploy to Kubernetes') {
             steps {
                 script {
@@ -112,7 +122,7 @@ pipeline {
                     bat 'az aks get-credentials --resource-group DigitAlholics3 --name DigitAlholics3'
 
                     // Aplicar configuraciones en Kubernetes (reemplaza esto por tus comandos)
-                    bat "kubectl apply -f AKS_webapp.yaml --namespace=default --set IMAGE_TAG=${IMAGE_TAG}"
+                    bat 'kubectl apply -f AKS_webapp.yaml --namespace=default'
                 }
             }
         }
