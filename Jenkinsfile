@@ -74,12 +74,13 @@ pipeline {
         stage('Publish Docker Image') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'DockerAccessToken', variable: 'DOCKER_HUB_TOKEN')]) {
-                        // Autenticación en Docker Hub con el nuevo token de acceso personal
-                        bat "echo \$DOCKER_HUB_TOKEN | docker login -u mundex -p @Db2c3R4C"
-                        // Publica la imagen en Docker Hub
-                        docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
-                    }
+
+                    // Autenticación en Docker Hub con tu nombre de usuario y contraseña
+                    sh "docker login -u mundex -p @Db2c3R4C"
+
+
+                    // Obtener el token de acceso personal de Docker Hub// Publica la imagen en Docker Hub
+                    docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                 }
             }
         }
