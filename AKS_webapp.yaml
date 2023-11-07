@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Backend-Theraphy
+  name: backendtheraphy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: Backend-Theraphy
+      app: backendtheraphy
   template:
     metadata:
       labels:
-        app: Backend-Theraphy
+        app: backendtheraphy
     spec:
       containers:
-        - name: Backend-Theraphy
+        - name: backendtheraphy
           image: mundex/digitalholics3-deployment:50
           ports:
             - containerPort: 8080
