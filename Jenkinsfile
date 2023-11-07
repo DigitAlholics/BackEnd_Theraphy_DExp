@@ -77,7 +77,7 @@ pipeline {
 
                     withCredentials([string(credentialsId: 'DockerAccessToken', variable: 'dckr_pat_iIzT67jbt2PGZxJ51gC1ht33m9I')]) {
                         // Autenticación en Docker Hub con el nuevo token de acceso personal
-                        sh "docker login -u mundex -p $dckr_pat_iIzT67jbt2PGZxJ51gC1ht33m9I"
+                        bat "docker login -u mundex -p $dckr_pat_iIzT67jbt2PGZxJ51gC1ht33m9I"
                         // Publica la imagen en Docker Hub
                         docker.image("mundex/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                     }
