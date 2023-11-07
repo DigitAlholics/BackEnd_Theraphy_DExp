@@ -112,7 +112,7 @@ pipeline {
                     bat 'az aks get-credentials --resource-group DigitAlholics3 --name DigitAlholics3'
 
                     // Aplicar configuraciones en Kubernetes (reemplaza esto por tus comandos)
-                    sh "kubectl apply -f AKS_webapp.yaml --namespace=DigitAlholics3 --set IMAGE_TAG=${IMAGE_TAG}"
+                    bat "kubectl apply -f AKS_webapp.yaml --namespace=default --set IMAGE_TAG=${IMAGE_TAG}"
                 }
             }
         }
