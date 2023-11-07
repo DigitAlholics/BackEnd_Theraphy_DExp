@@ -76,10 +76,10 @@ pipeline {
                 script {
 
                     // Autenticación en Docker Hub con tu nombre de usuario y contraseña
-                    bat "docker login -u mundex -p @Db2c3R4C"
+                    bat "docker login docker.io -u mundex -p @Db2c3R4C"
 
 
-                    // Obtener el token de acceso personal de Docker Hub// Publica la imagen en Docker Hub
+                    // Publica la imagen en Docker Hub
                     docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                 }
             }
