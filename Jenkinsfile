@@ -94,7 +94,7 @@ pipeline {
         stage('Replace IMAGE_TAG in YAML') {
             steps {
                 script {
-                    def yamlFilePath = 'AKS_webapp.yml' // Ruta al archivo YAML
+                    def yamlFilePath = 'AKS_webapp.yaml' // Ruta al archivo YAML
                     def imageTag = env.BUILD_NUMBER // O el valor deseado para IMAGE_TAG
 
                     // Leer el contenido del archivo YAML
