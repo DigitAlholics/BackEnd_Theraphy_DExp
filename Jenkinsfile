@@ -103,7 +103,7 @@ pipeline {
             steps {
                 script {
                     // Iniciar sesión en Azure (asegúrate de que la CLI de Azure esté instalada en tu servidor Jenkins)
-                    bat 'az login'
+                    bat 'az login --use-device-code'
 
                     // Establecer la suscripción
                     bat 'az account set --subscription 18c0accd-670d-4555-9f17-23e1d4ab0603'
