@@ -66,7 +66,7 @@ pipeline {
             steps {
                 script {
                     // Construir la imagen de Docker
-                    docker.build("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}")
+                    docker.build("mundex/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}")
                 }
             }
         }
@@ -80,7 +80,7 @@ pipeline {
 
 
                     // Publica la imagen en Docker Hub
-                    docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
+                    docker.image("mundex/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                 }
             }
         }
