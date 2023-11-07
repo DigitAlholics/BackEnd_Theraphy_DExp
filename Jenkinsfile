@@ -74,10 +74,12 @@ pipeline {
         stage('Publish Docker Image') {
             steps {
                 script {
-                    // Autenticación en el registro de Docker
-                    docker.withRegistry("${DOCKER_REGISTRY}", 'b1b83646-d8e4-4522-89ed-9840ed2761c4') {
-                        // Publicar la imagen en el registro
-                        docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
+                    withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
+                        // Autenticación en el registro de Docker
+                        docker.withRegistry("${DOCKER_REGISTRY}", 'mundex') {
+                            // Publicar la imagen en el registro
+                            docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
+                        }
                     }
                 }
             }
