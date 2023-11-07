@@ -71,6 +71,11 @@ pipeline {
                 }
             }
         }
+        stage('Check Docker Hub Connectivity') {
+            steps {
+                bat 'docker login'
+            }
+        }
         stage('Publish Docker Image') {
             steps {
                 script {
