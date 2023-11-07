@@ -91,23 +91,6 @@ pipeline {
                 }
             }
         }
-        stage('Replace IMAGE_TAG in YAML') {
-            steps {
-                script {
-                    def yamlFilePath = 'AKS_webapp.yaml' // Ruta al archivo YAML
-                    def imageTag = env.BUILD_NUMBER // O el valor deseado para IMAGE_TAG
-
-                    // Leer el contenido del archivo YAML
-                    def yamlContent = readFile(yamlFilePath)
-
-                    // Reemplazar IMAGE_TAG en el contenido YAML
-                    yamlContent = yamlContent.replaceAll('${IMAGE_TAG}', imageTag)
-
-                    // Escribir el contenido actualizado de vuelta al archivo
-                    writeFile(file: yamlFilePath, text: yamlContent)
-                }
-            }
-        }
 
         stage('Deploy to Kubernetes') {
             steps {
