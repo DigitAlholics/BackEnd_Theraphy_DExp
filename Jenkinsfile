@@ -75,9 +75,9 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'DockerHubCredentials', usernameVariable: 'DOCKER_HUB_USERNAME', passwordVariable: 'DOCKER_HUB_PASSWORD')]) {
-                        // Autenticación en el registro de Docker
-                        docker.withRegistry("${DOCKER_REGISTRY}", 'mundex') {
-                            // Publicar la imagen en el registro
+                        // Autenticación en Docker Hub
+                        docker.withRegistry('https://index.docker.io/v1/', 'DOCKER_HUB_USERNAME', 'DOCKER_HUB_PASSWORD') {
+                            // Publicar la imagen en Docker Hub
                             docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                         }
                     }
