@@ -80,7 +80,7 @@ pipeline {
 
 
                     // Publica la imagen en Docker Hub
-                    docker.image("${mundex}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
+                    docker.image("${DOCKER_REGISTRY}/${KUBE_DEPLOYMENT}:${BUILD_NUMBER}").push()
                 }
             }
         }
